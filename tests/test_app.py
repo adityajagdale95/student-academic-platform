@@ -1,9 +1,13 @@
 import pytest
 from app import create_app
+import database.db as database
 
 
 @pytest.fixture
-def client():
+def client(tmp_path, monkeypatch):
+    test_db = tmp_path / "test_students.db"
+    monkeypatch.setattr(database, "DB_PATH", test_db)
+
     app = create_app()
     app.config["TESTING"] = True
 
